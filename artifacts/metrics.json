@@ -1,0 +1,118 @@
+{
+  "definition": "Net cash = approved charges \u2212 refunds \u2212 chargebacks, USD, before fees and tax, within 730 days of order_ts. Test orders excluded. Pending excluded.",
+  "holdout": {
+    "alpha": 100.0,
+    "use_model": true,
+    "test": {
+      "mae": 77.0115696707142,
+      "bias": 0.9288731313049217,
+      "r2": 0.0763371491798116,
+      "mean_actual": 91.72758516601985,
+      "mean_pred": 92.65645829732476,
+      "n": 2319
+    },
+    "test_model": {
+      "mae": 77.0115696707142,
+      "bias": 0.9288731313049217,
+      "r2": 0.0763371491798116,
+      "mean_actual": 91.72758516601985,
+      "mean_pred": 92.65645829732476,
+      "n": 2319
+    },
+    "test_baseline": {
+      "mae": 77.64121102647192,
+      "bias": -0.22487031198807106,
+      "r2": 0.05851348619690444,
+      "mean_actual": 91.72758516601985,
+      "mean_pred": 91.50271485403177,
+      "n": 2319
+    },
+    "holdout_scale": 1.034442033435124,
+    "curves_holdout_tail": {
+      "1W": 0.913645386610086,
+      "4W": 0.8796987838718799,
+      "12W": 0.6972134227155147,
+      "upsell": 0.781400348586549
+    }
+  },
+  "tail": {
+    "1W": 0.9074157622685648,
+    "4W": 0.8801114098405667,
+    "12W": 0.6962707236931392,
+    "upsell": 0.7868666602348742
+  },
+  "recenter": 1.0351549949795857,
+  "use_model": true,
+  "october_orders": 5096,
+  "october_mean_pltv": 138.5508418367347,
+  "attach": {
+    "FlexHer": {
+      "12W": {
+        "addon": 0.16764912280701755,
+        "otp": 0.187859649122807,
+        "upsell": 0.3221754385964912,
+        "n": 14250
+      },
+      "1W": {
+        "addon": 0.15019421665947347,
+        "otp": 0.2060854553301683,
+        "upsell": 0.312473025463962,
+        "n": 4634
+      },
+      "4W": {
+        "addon": 0.16425599365959975,
+        "otp": 0.19068753715078265,
+        "upsell": 0.32363780463641767,
+        "n": 25235
+      }
+    },
+    "PlateWise": {
+      "12W": {
+        "addon": 0.16785290628706998,
+        "otp": 0.18772241992882563,
+        "upsell": 0.31969157769869516,
+        "n": 3372
+      },
+      "1W": {
+        "addon": 0.13841201716738197,
+        "otp": 0.1834763948497854,
+        "upsell": 0.3251072961373391,
+        "n": 932
+      },
+      "4W": {
+        "addon": 0.16596753602042677,
+        "otp": 0.1811052343607514,
+        "upsell": 0.3126025898230895,
+        "n": 5483
+      }
+    }
+  },
+  "one_time_net": {
+    "addon": {
+      "all": 11.42827710533093,
+      "n": 7766,
+      "by_brand": {
+        "FlexHer": 11.445291828793774,
+        "PlateWise": 11.34675615212528
+      }
+    },
+    "otp": {
+      "all": 27.79005770084332,
+      "n": 9012,
+      "by_brand": {
+        "FlexHer": 27.772364217252395,
+        "PlateWise": 27.878666666666668
+      }
+    }
+  },
+  "assumptions": [
+    "Prediction is made the day the order arrives. Same-day add-on and upsells are known; later renewals, refunds and app workouts are not.",
+    "Bills no cohort has reached are extended at a continuation rate shrunk toward 0.90 (1-week, after conversion), 0.88 (4-week), 0.74 (12-week) and 0.80 (upsell subscription).",
+    "A 12-week cycle is three 4-week cycles, so its per-cycle continuation is lower. The prior 0.74 sits near the observed 12-week step-down.",
+    "On top of the curve, a shrunk ratio adjusts for payment method, age, country, funnel and whether the checkout add-on or one-time upsell was taken. It is kept only if it beats the curve alone on orders from 16-31 March 2026.",
+    "Reference customer is a US card payer aged 46-50 on the main quiz. AppLovin and Snapchat are not given their own residual: both launched in mid-2026, and the holdout did not support a traffic-source lift once plan and offer were in the curve.",
+    "Organic CPA is 0, so LTV:CAC is undefined and those rows are not scale/hold/cut.",
+    "Company thresholds: scale at 3.5 or more, hold from 2.5 up to 3.5, cut below 2.5. Applied to mean pLTV / mean CPA of the campaign's October orders.",
+    "pLTV is before processor fees and tax, matching the brief. A fee haircut would lower every ratio and is not in the company rule as stated."
+  ]
+}
